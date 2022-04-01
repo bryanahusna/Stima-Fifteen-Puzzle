@@ -11,23 +11,30 @@ public class GameBoard {
 	public static void main(String[] args) {
 		try {
 			// read file, print, and check sigma and solvable
-			GameBoard gb = new GameBoard("test/config1.txt");
+			GameBoard gb = new GameBoard("test/config3_solvable.txt");
 			gb.printBoard();
 			System.out.println(gb.sigmaKurangAndX());
 			System.out.println("Solvable: " + gb.isSolvable());
 			// check movement
-			gb.moveLeft();
+			/*gb.moveLeft();
 			gb.printBoard();
 			gb.moveUp();
 			gb.printBoard();
 			gb.moveRight();
 			gb.printBoard();
 			gb.moveDown();
-			gb.printBoard();
+			gb.printBoard();*/
 			// check copy constructor
-			GameBoard gb2 = new GameBoard(gb);
+			/*GameBoard gb2 = new GameBoard(gb);
 			gb2.moveDown();
-			gb2.printBoard();
+			gb2.printBoard();*/
+			
+			// check utility
+			int result = gb.calculateManhattanDistance(15, 1);
+			System.out.println("Jarak 15 ke posisi 1: " + result);
+			result = gb.calculateManhattanDistance(2, 5);
+			System.out.println("Jarak 2 ke posisi 5: " + result);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,6 +155,107 @@ public class GameBoard {
 		this.emptyCellRow--;
 	}
 	
+	public int getElement(int i, int j) {
+		return this.arr[i][j];
+	}
+	public int getElement(int pos) {
+		return this.arr[(pos-1)/4][(pos-1)%4];
+	}
+	
+	/* isThe<Dir>Is(int num, int numadj)
+	 * mencari apakah sebelah Dir dari num adalah numadj */
+	public boolean isTheRightIs(int num, int numadj) {
+		int inum = 0, jnum = 0, inumadj = 0, jnumadj = 0;
+		boolean found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == num) {
+					inum = i;
+					jnum = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == numadj) {
+					inumadj = i;
+					jnumadj = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		return (inum == inumadj) && (jnum == jnumadj-1);
+	}
+	public boolean isTheBelowIs(int num, int numadj) {
+		int inum = 0, jnum = 0, inumadj = 0, jnumadj = 0;
+		boolean found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == num) {
+					inum = i;
+					jnum = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == numadj) {
+					inumadj = i;
+					jnumadj = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		return (inum == inumadj-1) && (jnum == jnumadj);
+	}
+	public boolean isTheRightBelowIs(int num, int numadj) {
+		int inum = 0, jnum = 0, inumadj = 0, jnumadj = 0;
+		boolean found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == num) {
+					inum = i;
+					jnum = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		found = false;
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(this.arr[i][j] == numadj) {
+					inumadj = i;
+					jnumadj = j;
+					found = true;
+					break;
+				}
+			}
+			if(found) break;
+		}
+		return (inum == inumadj-1) && (jnum == jnumadj-1);
+	}
+	public boolean isTheCoordinate(int num, int i, int j) {
+		if(this.arr[i][j] == num) return true;
+		else return false;
+	}
+	public boolean isThePos(int num, int pos) {
+		if(this.arr[(pos-1)/4][(pos-1)%4] == num) return true;
+		else return false;
+	}
 	
 	/* Mencetak papan */
 	public void printBoard() {
@@ -161,5 +269,34 @@ public class GameBoard {
 			}
 			System.out.println();
 		}
+	}
+	
+	/* Fungsi-fungsi utilitas */
+	public int calculateManhattanDistance(int srcNum, int destPos) {
+		int i, j;
+		int idest = (destPos-1)/4;
+		int jdest = (destPos-1)%4;
+		for(i = 0; i < 4; i++) {
+			for(j = 0; j < 4; j++) {
+				if(arr[i][j] == srcNum) {
+					return Math.abs(i - idest) + Math.abs(j - jdest);
+				}
+			}
+		}
+		return -1;
+	}
+	public int findPos(int num) {
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				if(arr[i][j] == num) {
+					return 4*i + j + 1;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public static int convertCoorToNumber(int i, int j) {
+		return 4*i + j + 1;
 	}
 }

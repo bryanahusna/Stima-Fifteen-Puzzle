@@ -1,10 +1,17 @@
 package bryan.fifteenpuzzle;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class StatedGameBoard extends GameBoard implements Comparable<StatedGameBoard> {
-	private int currentCost;	// cost dari root sampai node ini (terealisasi)
-	private int estimatedCost;	// estimasi node ini sampai tujuan
+	public enum Direction {
+		LEFT, UP, RIGHT, DOWN
+	}
+	
+	protected int currentCost;	// cost dari root sampai node ini (terealisasi)
+	protected int estimatedCost;	// estimasi node ini sampai tujuan
+	private List<Direction> steps;
 	
 	public static void main(String[] args) {
 		PriorityQueue<StatedGameBoard> pq = new PriorityQueue<>();
@@ -36,13 +43,15 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 	public StatedGameBoard(String configPath) throws Exception {
 		super(configPath);
 		this.currentCost = 0;
-		this.updateEstimatedCost();
+		this.estimatedCost = 0;
+		this.steps = new ArrayList<>();
 	}
 	
 	public StatedGameBoard(StatedGameBoard sgb) {
 		super(sgb);
 		this.currentCost = sgb.currentCost;
 		this.estimatedCost = sgb.estimatedCost;
+		this.steps = new ArrayList<>(sgb.steps);
 	}
 	
 	/* Implementasi compareTo untuk PriorityQueue */
@@ -53,14 +62,15 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 		} else if(this.currentCost + this.estimatedCost > o.currentCost + o.estimatedCost) {
 			return 1;
 		} else {
+			return 0;
 			// Jika totalCost keduanya sama, prioritaskan yang memiliki currentCost lebih tinggi (terdalam)
-			if(this.currentCost > o.currentCost) {
-				return -1;
-			} else if(this.currentCost < o.currentCost) {
+			/*if(this.currentCost > o.currentCost) {
 				return 1;
+			} else if(this.currentCost < o.currentCost) {
+				return -1;
 			} else {
 				return 0;
-			}
+			}*/
 		}
 	}
 	
@@ -76,7 +86,10 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 				if(this.arr[i][j] == 16) {
 					continue;
 				} else {
-					estimated += arr[i][j] == (4*i + j + 1) ? 0 : 1;
+					//estimated += arr[i][j] == (4*i + j + 1) ? 0 : 1;
+					int inum = (arr[i][j]-1) / 4;
+					int jnum = (arr[i][j]-1) % 4;
+					estimated += Math.abs(inum - i) + Math.abs(jnum - j);
 				}
 			}
 		}
@@ -87,29 +100,46 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 		return this.currentCost + this.estimatedCost;
 	}
 	
+	public boolean isSolution() {
+		return this.estimatedCost == 0;
+	}
+	
+	public List<Direction> getSteps() {
+		return this.steps;
+	}
+	
 	/* Override move<direction> agar selain memindahkan juga mengupdate harga estimasi */
 	@Override
 	public void moveRight() {
 		super.moveRight();
 		this.currentCost++;
 		this.updateEstimatedCost();
+		this.steps.add(Direction.RIGHT);
 	}
 	@Override
 	public void moveLeft() {
 		super.moveLeft();
 		this.currentCost++;
 		this.updateEstimatedCost();
+		this.steps.add(Direction.LEFT);
 	}
 	@Override
 	public void moveDown() {
 		super.moveDown();
 		this.currentCost++;
 		this.updateEstimatedCost();
+		this.steps.add(Direction.DOWN);
 	}
 	@Override
 	public void moveUp() {
 		super.moveUp();
 		this.currentCost++;
 		this.updateEstimatedCost();
+		this.steps.add(Direction.UP);
+	}
+	public void printSteps() {
+		for(Direction dir : this.steps) {
+			System.out.println(dir);
+		}
 	}
 }
