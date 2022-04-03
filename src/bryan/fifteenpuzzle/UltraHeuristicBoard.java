@@ -2,37 +2,11 @@ package bryan.fifteenpuzzle;
 
 import bryan.fifteenpuzzle.NextTarget.Type;
 
+// Kelas papan untuk pencarian solusi yang cepat, TETAPI tidak selalu optimal
+// keunggulannya selalu cepat
 public class UltraHeuristicBoard extends StatedGameBoard{
 	private boolean[] locked;	// locked[i] berarti posisi i sudah benar sehingga tidak boleh dipindah
 	private NextTarget nextTarget;
-	
-	public static void main(String[] args) {
-		try {
-			UltraHeuristicBoard uhb = new UltraHeuristicBoard("test/config3_solvable.txt");
-			uhb.updateEstimatedCost();
-			uhb.printBoard();
-			//uhb.lockPosition(11);
-			System.out.println("Bisakah bergerak ke kiri: " + uhb.canMoveLeft());
-			System.out.println("Bisakah bergerak ke atas: " + uhb.canMoveUp());
-			System.out.println("Estimasi: " + uhb.estimatedCost);
-			
-			uhb.moveLeft();
-			uhb.moveLeft();
-			uhb.moveLeft();
-			uhb.printBoard();
-			System.out.println("Estimasi: " + uhb.estimatedCost);
-			
-			uhb.moveDown();
-			uhb.moveRight();
-			uhb.moveRight();
-			uhb.moveUp();
-			uhb.moveUp();
-			uhb.printBoard();
-			System.out.println("Estimasi: " + uhb.estimatedCost);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public UltraHeuristicBoard() {
 		super();

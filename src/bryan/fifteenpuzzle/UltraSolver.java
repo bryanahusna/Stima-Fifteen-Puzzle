@@ -8,6 +8,8 @@ import java.util.Queue;
 import bryan.fifteenpuzzle.NextTarget.Type;
 import bryan.fifteenpuzzle.StatedGameBoard.Direction;
 
+// Kelas untuk pencarian solusi yang cepat, TETAPI tidak selalu optimal
+// keunggulannya selalu cepat
 public class UltraSolver implements Solver{
 	private UltraHeuristicBoard gameBoardInitial;
 	public boolean isFound = false;

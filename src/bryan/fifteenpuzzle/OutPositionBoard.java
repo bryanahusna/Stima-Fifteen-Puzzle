@@ -1,5 +1,6 @@
 package bryan.fifteenpuzzle;
 
+// Kelas yang perhitungannya dengan estimasi tile yang tidak berada pada tempatnya
 public class OutPositionBoard extends StatedGameBoard {
 	public OutPositionBoard() {
 		super();

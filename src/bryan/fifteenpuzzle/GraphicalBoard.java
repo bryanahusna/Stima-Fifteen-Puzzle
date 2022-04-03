@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
+// Kelas untuk menampilkan animasi puzzle
+// Dibuat dengan Java Swing
 public class GraphicalBoard extends StatedGameBoard implements ActionListener {
 	private StatedGameBoard initial;
 	public JFrame jf;

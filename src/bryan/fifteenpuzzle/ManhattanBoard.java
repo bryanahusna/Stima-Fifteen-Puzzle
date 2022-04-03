@@ -1,5 +1,6 @@
 package bryan.fifteenpuzzle;
 
+// Perhitungan dengan estimasi jarak Manhattan
 public class ManhattanBoard extends StatedGameBoard {
 	public ManhattanBoard() {
 		super();

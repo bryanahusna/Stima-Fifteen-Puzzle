@@ -5,47 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+// Kelas GameBoard, menyimpan array dan posisi tile kosong
+// Diturunkan menjadi banyak jenis: StatedGameBoard, GraphicalBoard, OutPositionBoard, ManhattanBoard, UltraHeuristicBoard
+// Perbedaannya antarkelas turunannya adalah fungsionalitasnya dan perhitungan estimasi biaya
 public class GameBoard {
 	protected int[][] arr;
 	protected int emptyCellRow;
 	protected int emptyCellCol;
-	
-	public static void main(String[] args) {
-		try {
-			// read file, print, and check sigma and solvable
-			GameBoard gb = new GameBoard("test/config3_solvable.txt");
-			gb.printBoard();
-			System.out.println(gb.sigmaKurangAndX());
-			System.out.println("Solvable: " + gb.isSolvable());
-			// check movement
-			/*gb.moveLeft();
-			gb.printBoard();
-			gb.moveUp();
-			gb.printBoard();
-			gb.moveRight();
-			gb.printBoard();
-			gb.moveDown();
-			gb.printBoard();*/
-			// check copy constructor
-			/*GameBoard gb2 = new GameBoard(gb);
-			gb2.moveDown();
-			gb2.printBoard();*/
-			
-			// check utility
-			int result = gb.calculateManhattanDistance(15, 1);
-			System.out.println("Jarak 15 ke posisi 1: " + result);
-			result = gb.calculateManhattanDistance(2, 5);
-			System.out.println("Jarak 2 ke posisi 5: " + result);
-			
-			GameBoard gb2 = new GameBoard();
-			gb2.printBoard();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-
 	
 	public GameBoard() {
 		this.arr = new int[4][4];

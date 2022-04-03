@@ -5,25 +5,17 @@ import java.util.PriorityQueue;
 
 import bryan.fifteenpuzzle.StatedGameBoard.Direction;
 
+// Kelas Solver untuk algoritma Branch and Bound karena mirip
+// Ada dua metode: titik tidak tepat (kode 1) dan manhattan distance (kode 2)
+// Secara umum manhattan distance lebih efisien daripada titik tidak tepat
 public class BnBSolver implements Solver {
-	private StatedGameBoard gameBoardInitial;
+	private StatedGameBoard gameBoardInitial;	// menyimpan status awal
+	PriorityQueue<StatedGameBoard> stateQueue;
 	private List<Direction> solutionSteps;
+	
+	public boolean isFound = false;
 	private int simpulDibangkitkan = 0;
 	private int simpulDiperiksa = 0;
-	PriorityQueue<StatedGameBoard> stateQueue;
-	public boolean isFound = false;
-	
-	public static void main(String[] args) {
-		try {
-			BnBSolver solver = new BnBSolver("test/config5_solvable.txt", 0);
-			if(solver.gameBoardInitial.isSolvable())
-				solver.startSolving();
-			else
-				System.out.println("Not solvable");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public BnBSolver(int method) {
 		this.stateQueue = new PriorityQueue<>();

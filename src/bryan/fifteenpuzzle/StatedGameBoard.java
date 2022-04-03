@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+// Kelas yang menyimpan papan dengan perhitungan biaya dan sejarah perpindahannya
+// digunakan untuk node pada pohon di PriorityQueue
 public class StatedGameBoard extends GameBoard implements Comparable<StatedGameBoard> {
 	public enum Direction {
 		LEFT, UP, RIGHT, DOWN
@@ -12,33 +14,6 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 	protected int currentCost;	// cost dari root sampai node ini (terealisasi)
 	protected int estimatedCost;	// estimasi node ini sampai tujuan
 	public List<Direction> steps;
-	
-	public static void main(String[] args) {
-		PriorityQueue<StatedGameBoard> pq = new PriorityQueue<>();
-		try {
-			OutPositionBoard sgd = new OutPositionBoard("test/config1.txt");
-			StatedGameBoard sgd1 = new OutPositionBoard(sgd);
-			StatedGameBoard sgd2 = new OutPositionBoard(sgd);
-			StatedGameBoard sgd3 = new OutPositionBoard(sgd);
-			StatedGameBoard sgd4 = new OutPositionBoard(sgd);
-			
-			sgd1.moveUp();
-			sgd2.moveRight();
-			sgd3.moveDown();
-			sgd4.moveLeft();
-			
-			pq.add(sgd1);
-			pq.add(sgd2);
-			pq.add(sgd3);
-			pq.add(sgd4);
-			while(!pq.isEmpty()) {
-				System.out.println(pq.poll().getTotalCost());
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
 	
 	public StatedGameBoard() {
 		super();
@@ -70,14 +45,6 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 			return 1;
 		} else {
 			return 0;
-			// Jika totalCost keduanya sama, prioritaskan yang memiliki currentCost lebih tinggi (terdalam)
-			/*if(this.currentCost > o.currentCost) {
-				return 1;
-			} else if(this.currentCost < o.currentCost) {
-				return -1;
-			} else {
-				return 0;
-			}*/
 		}
 	}
 	
