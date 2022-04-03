@@ -11,16 +11,16 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 	
 	protected int currentCost;	// cost dari root sampai node ini (terealisasi)
 	protected int estimatedCost;	// estimasi node ini sampai tujuan
-	private List<Direction> steps;
+	public List<Direction> steps;
 	
 	public static void main(String[] args) {
 		PriorityQueue<StatedGameBoard> pq = new PriorityQueue<>();
 		try {
-			StatedGameBoard sgd = new StatedGameBoard("test/config1.txt");
-			StatedGameBoard sgd1 = new StatedGameBoard(sgd);
-			StatedGameBoard sgd2 = new StatedGameBoard(sgd);
-			StatedGameBoard sgd3 = new StatedGameBoard(sgd);
-			StatedGameBoard sgd4 = new StatedGameBoard(sgd);
+			OutPositionBoard sgd = new OutPositionBoard("test/config1.txt");
+			StatedGameBoard sgd1 = new OutPositionBoard(sgd);
+			StatedGameBoard sgd2 = new OutPositionBoard(sgd);
+			StatedGameBoard sgd3 = new OutPositionBoard(sgd);
+			StatedGameBoard sgd4 = new OutPositionBoard(sgd);
 			
 			sgd1.moveUp();
 			sgd2.moveRight();
@@ -38,6 +38,13 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public StatedGameBoard() {
+		super();
+		this.currentCost = 0;
+		this.estimatedCost = 0;
+		this.steps = new ArrayList<>();
 	}
 	
 	public StatedGameBoard(String configPath) throws Exception {
@@ -80,20 +87,7 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 	}
 	
 	public int calculateEstimatedCost() {
-		int estimated = 0;
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				if(this.arr[i][j] == 16) {
-					continue;
-				} else {
-					//estimated += arr[i][j] == (4*i + j + 1) ? 0 : 1;
-					int inum = (arr[i][j]-1) / 4;
-					int jnum = (arr[i][j]-1) % 4;
-					estimated += Math.abs(inum - i) + Math.abs(jnum - j);
-				}
-			}
-		}
-		return estimated;
+		return 0;
 	}
 	
 	public int getTotalCost() {
@@ -106,6 +100,26 @@ public class StatedGameBoard extends GameBoard implements Comparable<StatedGameB
 	
 	public List<Direction> getSteps() {
 		return this.steps;
+	}
+	
+	public void displayFromSteps(List<Direction> steps) {
+		for(Direction dir : steps) {
+			System.out.println(dir);
+			if(dir == Direction.LEFT) {
+				super.moveLeft();
+				this.printBoard();
+			} else if(dir == Direction.UP) {
+				super.moveUp();
+				this.printBoard();
+			} else if(dir == Direction.RIGHT) {
+				super.moveRight();
+				this.printBoard();
+			} else if(dir == Direction.DOWN) {
+				super.moveDown();
+				this.printBoard();
+			}
+			System.out.println();
+		}
 	}
 	
 	/* Override move<direction> agar selain memindahkan juga mengupdate harga estimasi */

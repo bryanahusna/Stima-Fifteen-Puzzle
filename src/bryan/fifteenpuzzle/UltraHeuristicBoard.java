@@ -34,6 +34,15 @@ public class UltraHeuristicBoard extends StatedGameBoard{
 		}
 	}
 	
+	public UltraHeuristicBoard() {
+		super();
+		this.locked = new boolean[16];
+		for(int i = 0; i < 16; i++) {
+			this.locked[i] = false;
+		}
+		this.nextTarget = new NextTarget(1, 1, Type.MOVEANDLOCK);
+	}
+	
 	public UltraHeuristicBoard(String configPath) throws Exception {
 		super(configPath);
 		this.locked = new boolean[16];

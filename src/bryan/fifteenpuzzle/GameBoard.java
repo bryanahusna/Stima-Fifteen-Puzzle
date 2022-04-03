@@ -1,6 +1,8 @@
 package bryan.fifteenpuzzle;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class GameBoard {
@@ -35,16 +37,34 @@ public class GameBoard {
 			result = gb.calculateManhattanDistance(2, 5);
 			System.out.println("Jarak 2 ke posisi 5: " + result);
 			
+			GameBoard gb2 = new GameBoard();
+			gb2.printBoard();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
+
 	
 	public GameBoard() {
 		this.arr = new int[4][4];
-		this.emptyCellRow = -1;
-		this.emptyCellCol = -1;
+		do {
+			Map<Integer, Boolean> occupied = new HashMap<>();
+			for(int i = 1; i <= 16; i++) {
+				int random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
+				while(occupied.containsKey(random_int)) {
+					random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
+				}
+				occupied.put(random_int, true);
+				this.arr[(i-1)/4][(i-1)%4] = random_int;
+				
+				if(random_int == 16) {
+					this.emptyCellRow = (i-1)/4;
+					this.emptyCellCol = (i-1)%4;
+				}
+			}
+		} while(!this.isSolvable());
 	}
 	
 	/* Constructor pembuatan GameBoard dari pembacaan file */

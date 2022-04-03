@@ -1,15 +1,21 @@
 package bryan.fifteenpuzzle;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import bryan.fifteenpuzzle.NextTarget.Type;
+import bryan.fifteenpuzzle.StatedGameBoard.Direction;
 
-public class UltraSolver {
+public class UltraSolver implements Solver{
 	private UltraHeuristicBoard gameBoardInitial;
 	public boolean isFound = false;
 	Queue<NextTarget> nextTargetQueue;
+	private List<Direction> solutionSteps;
+	private int simpulDibangkitkan;
+	private int simpulDiperiksa;
+	
 	int totalDibangkitkan = 0;
 	
 	public static void main(String[] args) {
@@ -22,6 +28,12 @@ public class UltraSolver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public UltraSolver() {
+		this.gameBoardInitial = new UltraHeuristicBoard();
+		this.gameBoardInitial.updateEstimatedCost();
+		this.initTargetQueue();
 	}
 	
 	public UltraSolver(String configPath) throws Exception {
@@ -86,13 +98,15 @@ public class UltraSolver {
 		// Semua beres
 	}
 	
+	@Override
 	public void startSolving() {
+		this.simpulDibangkitkan = 0;
+		this.simpulDiperiksa = 0;
+		
 		UltraHeuristicBoard uhb = new UltraHeuristicBoard(this.gameBoardInitial);
 		while(!this.nextTargetQueue.isEmpty()) {
 			int targetPos = this.nextTargetQueue.peek().toPos;
 			int fromNum = this.nextTargetQueue.peek().fromNum;
-			int itarget = (targetPos-1)/4;
-			int jtarget = (targetPos-1)%4;
 			boolean passNow = false;
 			
 			if(targetPos != fromNum && fromNum > 0) {
@@ -141,9 +155,8 @@ public class UltraSolver {
 				uhb.printBoard(); System.out.println();
 			}
 		}
-		uhb.printSteps();
-		System.out.println("Jumlah langkah: " + uhb.currentCost);
-		System.out.println("Jumlah simpul dibangkitkan: " + this.totalDibangkitkan);
+		
+		this.solutionSteps = uhb.steps;
 		this.isFound = true;
 	}
 	
@@ -195,5 +208,21 @@ public class UltraSolver {
 		
 		return current;
 		
+	}
+	
+	@Override
+	public void displaySolution() {
+		UltraHeuristicBoard uhb = new UltraHeuristicBoard(this.gameBoardInitial);
+		uhb.displayFromSteps(this.solutionSteps);
+		System.out.println();
+		
+		System.out.println("Jumlah langkah solusi: " + this.solutionSteps.size());
+		System.out.println("Jumlah simpul dibangkitkan: " + this.simpulDibangkitkan);
+		System.out.println("Jumlah simpul diperiksa: " + this.simpulDiperiksa);
+	}
+	
+	@Override
+	public UltraHeuristicBoard getGameBoardInitial() {
+		return this.gameBoardInitial;
 	}
 }
