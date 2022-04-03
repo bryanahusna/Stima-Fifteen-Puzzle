@@ -13,10 +13,9 @@ public class UltraSolver implements Solver{
 	public boolean isFound = false;
 	Queue<NextTarget> nextTargetQueue;
 	private List<Direction> solutionSteps;
-	private int simpulDibangkitkan;
-	private int simpulDiperiksa;
+	private int simpulDibangkitkan = 0;
+	private int simpulDiperiksa = 0;
 	
-	int totalDibangkitkan = 0;
 	
 	public static void main(String[] args) {
 		try {
@@ -128,31 +127,10 @@ public class UltraSolver implements Solver{
 				}
 				if(passNow) {
 					uhb = this.solveNext(uhb, new NextTarget(nextAdjusment, 16, Type.MOVEONLY));
-					uhb.printBoard();
 				}
 			}
-			/*if(targetPos != fromNum && fromNum > 0 && fromNum != uhb.getElement(fromNum)) {
-				int occupyingProperNow = uhb.getElement(fromNum);
-				if(fromNum == 4 && occupyingProperNow == 3 || fromNum == 8 && occupyingProperNow == 7) {
-					uhb = this.solveNext(uhb, new NextTarget(occupyingProperNow, 16, Type.MOVEONLY));
-					uhb.printBoard();
-					passNow = true;
-				} else if(fromNum == 4 && uhb.getElement(itarget, jtarget) == 3 || fromNum == 8 && uhb.getElement(itarget, jtarget) == 7) {
-					uhb = this.solveNext(uhb, new NextTarget(uhb.getElement(itarget, jtarget), 16, Type.MOVEONLY));
-					uhb.printBoard();
-					passNow = true;
-				}
-			}*/
-			/*if(targetPos != fromNum && targetPos == uhb.getElement(itarget, jtarget)) {
-				//int sourcePos = uhb.findPos(fromNum);
-				uhb = this.solveNext(uhb, new NextTarget(targetPos, 16, Type.MOVEONLY));
-				uhb.printBoard();
-			} else if(targetPos != fromNum && fromNum > 0 && !uhb.isLocked(fromNum) && uhb.getElement(fromNum) != fromNum) {
-				uhb = this.solveNext(uhb, new NextTarget(uhb.getElement(fromNum), 16, Type.MOVEONLY));
-				uhb.printBoard();
-			}*/ if(!passNow) {
+			if(!passNow) {
 				uhb = this.solveNext(uhb, this.nextTargetQueue.poll());
-				uhb.printBoard(); System.out.println();
 			}
 		}
 		
@@ -173,6 +151,7 @@ public class UltraSolver implements Solver{
 		pq.add(current);
 		boolean found = false;
 		while(!pq.isEmpty() && !found) {
+			this.simpulDiperiksa++;
 			current = pq.poll();
 			if(current.isTargetFulfilled()) {
 				found = true;
@@ -181,25 +160,25 @@ public class UltraSolver implements Solver{
 					UltraHeuristicBoard temp = new UltraHeuristicBoard(current);
 					temp.moveUp();
 					pq.add(temp);
-					this.totalDibangkitkan++;
+					this.simpulDibangkitkan++;
 				}
 				if(current.canMoveDown()) {
 					UltraHeuristicBoard temp = new UltraHeuristicBoard(current);
 					temp.moveDown();
 					pq.add(temp);
-					this.totalDibangkitkan++;
+					this.simpulDibangkitkan++;
 				}
 				if(current.canMoveLeft()) {
 					UltraHeuristicBoard temp = new UltraHeuristicBoard(current);
 					temp.moveLeft();
 					pq.add(temp);
-					this.totalDibangkitkan++;
+					this.simpulDibangkitkan++;
 				}
 				if(current.canMoveRight()) {
 					UltraHeuristicBoard temp = new UltraHeuristicBoard(current);
 					temp.moveRight();
 					pq.add(temp);
-					this.totalDibangkitkan++;
+					this.simpulDibangkitkan++;
 				}
 			}
 		}

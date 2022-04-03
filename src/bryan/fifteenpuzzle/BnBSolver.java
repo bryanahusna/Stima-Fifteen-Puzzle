@@ -8,8 +8,8 @@ import bryan.fifteenpuzzle.StatedGameBoard.Direction;
 public class BnBSolver implements Solver {
 	private StatedGameBoard gameBoardInitial;
 	private List<Direction> solutionSteps;
-	private int simpulDibangkitkan;
-	private int simpulDiperiksa;
+	private int simpulDibangkitkan = 0;
+	private int simpulDiperiksa = 0;
 	PriorityQueue<StatedGameBoard> stateQueue;
 	public boolean isFound = false;
 	
@@ -48,59 +48,85 @@ public class BnBSolver implements Solver {
 	public BnBSolver(StatedGameBoard gameBoard) {
 		this.stateQueue = new PriorityQueue<>();
 		this.gameBoardInitial = new StatedGameBoard(gameBoard);
-		this.gameBoardInitial.updateEstimatedCost();
 	}
 	
 	@Override
 	public void startSolving() {
-		StatedGameBoard sgb = new StatedGameBoard(gameBoardInitial);
-		sgb.printBoard(); System.out.println();
+		this.simpulDibangkitkan = 0;
+		this.simpulDiperiksa = 0;
+		
+		StatedGameBoard sgb;
+		if(this.gameBoardInitial instanceof ManhattanBoard) {
+			sgb = new ManhattanBoard((ManhattanBoard)this.gameBoardInitial);
+		} else {
+			sgb = new OutPositionBoard((OutPositionBoard)this.gameBoardInitial);
+		}
 		stateQueue.add(sgb);
-		int evaluated = 0;
-		int bangkited = 0;
+		
+		this.simpulDiperiksa = 0;
 		while(!stateQueue.isEmpty() && !isFound) {
-			evaluated++;
+			this.simpulDiperiksa++;
 			sgb = stateQueue.poll();
 			if(sgb.isSolution()) {
 				this.isFound = true;
 				this.solutionSteps = sgb.getSteps();
-				
-				sgb.printBoard(); System.out.println();
-				System.out.println("Total biaya: " + sgb.getTotalCost());
-				System.out.println("Yang dievaluasi: " + evaluated);
-				System.out.println("Yang dibangkitkan: " + bangkited);
-				sgb.printSteps();
 			} else {
 				if(sgb.canMoveLeft()) {
-					StatedGameBoard temp = new StatedGameBoard(sgb);
+					StatedGameBoard temp;
+					if(this.gameBoardInitial instanceof ManhattanBoard) {
+						temp = new ManhattanBoard((ManhattanBoard)sgb);
+					} else {
+						temp = new OutPositionBoard((OutPositionBoard)sgb);
+					}
 					temp.moveLeft();
 					stateQueue.add(temp);
-					bangkited++;
+					this.simpulDibangkitkan++;
 				}
 				if(sgb.canMoveUp()) {
-					StatedGameBoard temp = new StatedGameBoard(sgb);
+					StatedGameBoard temp;
+					if(this.gameBoardInitial instanceof ManhattanBoard) {
+						temp = new ManhattanBoard((ManhattanBoard)sgb);
+					} else {
+						temp = new OutPositionBoard((OutPositionBoard)sgb);
+					}
 					temp.moveUp();
 					stateQueue.add(temp);
-					bangkited++;
+					this.simpulDibangkitkan++;
 				}
 				if(sgb.canMoveRight()) {
-					StatedGameBoard temp = new StatedGameBoard(sgb);
+					StatedGameBoard temp;
+					if(this.gameBoardInitial instanceof ManhattanBoard) {
+						temp = new ManhattanBoard((ManhattanBoard)sgb);
+					} else {
+						temp = new OutPositionBoard((OutPositionBoard)sgb);
+					}
 					temp.moveRight();
 					stateQueue.add(temp);
-					bangkited++;
+					this.simpulDibangkitkan++;
 				}
 				if(sgb.canMoveDown()) {
-					StatedGameBoard temp = new StatedGameBoard(sgb);
+					StatedGameBoard temp;
+					if(this.gameBoardInitial instanceof ManhattanBoard) {
+						temp = new ManhattanBoard((ManhattanBoard)sgb);
+					} else {
+						temp = new OutPositionBoard((OutPositionBoard)sgb);
+					}
 					temp.moveDown();
 					stateQueue.add(temp);
-					bangkited++;
+					this.simpulDibangkitkan++;
 				}
 			}
 		}
 	}
 	@Override
 	public void displaySolution() {
+		StatedGameBoard sgb = new StatedGameBoard(this.gameBoardInitial);
+		sgb.displayFromSteps(this.solutionSteps);
+		System.out.println();
 		
+		System.out.println("Jumlah langkah solusi: " + this.solutionSteps.size());
+		System.out.println("Jumlah simpul dibangkitkan: " + this.simpulDibangkitkan);
+		System.out.println("Jumlah simpul diperiksa: " + this.simpulDiperiksa);
 	}
 	
 	@Override

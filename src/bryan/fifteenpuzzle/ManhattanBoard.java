@@ -19,7 +19,6 @@ public class ManhattanBoard extends StatedGameBoard {
 				if(this.arr[i][j] == 16) {
 					continue;
 				} else {
-					//estimated += arr[i][j] == (4*i + j + 1) ? 0 : 1;
 					int inum = (arr[i][j]-1) / 4;
 					int jnum = (arr[i][j]-1) % 4;
 					estimated += Math.abs(inum - i) + Math.abs(jnum - j);

@@ -49,22 +49,20 @@ public class GameBoard {
 	
 	public GameBoard() {
 		this.arr = new int[4][4];
-		do {
-			Map<Integer, Boolean> occupied = new HashMap<>();
-			for(int i = 1; i <= 16; i++) {
-				int random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
-				while(occupied.containsKey(random_int)) {
-					random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
-				}
-				occupied.put(random_int, true);
-				this.arr[(i-1)/4][(i-1)%4] = random_int;
-				
-				if(random_int == 16) {
-					this.emptyCellRow = (i-1)/4;
-					this.emptyCellCol = (i-1)%4;
-				}
+		Map<Integer, Boolean> occupied = new HashMap<>();
+		for(int i = 1; i <= 16; i++) {
+			int random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
+			while(occupied.containsKey(random_int)) {
+				random_int = (int)Math.floor(Math.random()*(16-1+1)+1);
 			}
-		} while(!this.isSolvable());
+			occupied.put(random_int, true);
+			this.arr[(i-1)/4][(i-1)%4] = random_int;
+			
+			if(random_int == 16) {
+				this.emptyCellRow = (i-1)/4;
+				this.emptyCellCol = (i-1)%4;
+			}
+		}
 	}
 	
 	/* Constructor pembuatan GameBoard dari pembacaan file */
