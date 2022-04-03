@@ -1,13 +1,34 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
 import bryan.fifteenpuzzle.BnBSolver;
+import bryan.fifteenpuzzle.GraphicalBoard;
 import bryan.fifteenpuzzle.Solver;
+import bryan.fifteenpuzzle.StatedGameBoard;
 import bryan.fifteenpuzzle.UltraSolver;
 
-public class Main {
-
+public class Main implements ActionListener {
 	public static void main(String[] args) {
+		try {
+			
+			//Solver solver = new BnBSolver("test/config1_solvable.txt", 2);
+			Solver solver = new UltraSolver("test/config1_solvable.txt");
+			solver.startSolving();
+			GraphicalBoard gb = new GraphicalBoard(solver.getGameBoardInitial(), solver.getSolutionSteps());
+			gb.animate();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
+		
 		int src, method;
 		String configPath = null;
 		Scanner scanner = new Scanner(System.in);
@@ -107,6 +128,12 @@ public class Main {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

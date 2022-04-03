@@ -204,4 +204,9 @@ public class UltraSolver implements Solver{
 	public UltraHeuristicBoard getGameBoardInitial() {
 		return this.gameBoardInitial;
 	}
+
+	@Override
+	public List<Direction> getSolutionSteps() {
+		return this.solutionSteps;
+	}
 }

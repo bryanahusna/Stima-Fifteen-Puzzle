@@ -48,6 +48,7 @@ public class BnBSolver implements Solver {
 	public BnBSolver(StatedGameBoard gameBoard) {
 		this.stateQueue = new PriorityQueue<>();
 		this.gameBoardInitial = new StatedGameBoard(gameBoard);
+		this.gameBoardInitial.updateEstimatedCost();
 	}
 	
 	@Override
@@ -132,5 +133,10 @@ public class BnBSolver implements Solver {
 	@Override
 	public StatedGameBoard getGameBoardInitial() {
 		return this.gameBoardInitial;
+	}
+	
+	@Override
+	public List<Direction> getSolutionSteps() {
+		return this.solutionSteps;
 	}
 }
