@@ -2,7 +2,6 @@ package bryan.fifteenpuzzle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 // Kelas yang menyimpan papan dengan perhitungan biaya dan sejarah perpindahannya
 // digunakan untuk node pada pohon di PriorityQueue
