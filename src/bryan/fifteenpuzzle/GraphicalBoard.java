@@ -73,6 +73,7 @@ public class GraphicalBoard extends StatedGameBoard implements ActionListener {
 				if(k >= this.steps.size()) {
 					startStop.setText("Start");
 					started = false;
+					startStop.setEnabled(false);
 					resetButton.setEnabled(true);
 					resetButton.setBackground(new Color(0x03, 0x25, 0x4c));
 					tm.stop();
@@ -125,13 +126,11 @@ public class GraphicalBoard extends StatedGameBoard implements ActionListener {
 					startStop.setText("Start");
 					started = false;
 					resetButton.setEnabled(true);
-					resetButton.setBackground(new Color(0x03, 0x25, 0x4c));
 					tm.stop();
 				} else {
 					startStop.setText("Stop");
 					started = true;
 					resetButton.setEnabled(false);
-					resetButton.setBackground(Color.GRAY);
 					tm.start();
 				}
 			}
@@ -159,6 +158,7 @@ public class GraphicalBoard extends StatedGameBoard implements ActionListener {
 		this.curElFinish = true;
 		this.emptyCellRow = initial.emptyCellRow;
 		this.emptyCellCol = initial.emptyCellCol;
+		this.startStop.setEnabled(true);
 		
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 4; j++) {
